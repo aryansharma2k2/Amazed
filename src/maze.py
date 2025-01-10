@@ -100,4 +100,29 @@ class Maze():
         for i in range(self._num_cols):
             for j in range(self._num_rows):
                 self._cells[i][j]._visited=False
+    
+    def solve(self):
+        return self._solve_r(0,0)
 
+    def _solve_r(self,i,j):
+        self._animate()
+        self._cells[i][j]._visited = True
+        if i==self._num_cols-1 and j==self._num_rows-1:
+            return True
+        ls=[]
+        if self.check(i,j+1) and not self._cells[i][j+1]._visited and not self._cells[i][j].has_bottom_wall:
+            ls.append((i,j+1))
+        if self.check(i+1,j) and not self._cells[i+1][j]._visited and not self._cells[i][j].has_right_wall:
+            ls.append((i+1,j))
+        if self.check(i,j-1) and not self._cells[i][j-1]._visited and not self._cells[i][j].has_top_wall:
+            ls.append((i,j-1))
+        if self.check(i-1,j) and not self._cells[i-1][j]._visited and not self._cells[i][j].has_left_wall:
+            ls.append((i-1,j))
+        for direction in ls:
+            self._cells[i][j].draw_move(self._cells[direction[0]][direction[1]])
+            if self._solve_r(direction[0],direction[1]):
+                return True
+            else:
+                self._cells[i][j].draw_move(self._cells[direction[0]][direction[1]], undo=True)
+
+        return False
