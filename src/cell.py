@@ -12,24 +12,33 @@ class Cell():
         self._y1 = None
         self._y2 = None
         self._win = win
+        self._visited = False
 
     def draw(self, x1, y1, x2, y2):
         self._x1 = x1
         self._x2 = x2
         self._y1 = y1
         self._y2 = y2
+        line1 = Line(Point(x1, y1), Point(x1, y2))
         if self.has_left_wall:
-            line = Line(Point(x1, y1), Point(x1, y2))
-            self._win.draw_line(line,"red")
+            self._win.draw_line(line1,"red")
+        else:
+            self._win.draw_line(line1,"white")
+        line2 = Line(Point(x1, y1), Point(x2, y1))
         if self.has_top_wall:
-            line = Line(Point(x1, y1), Point(x2, y1))
-            self._win.draw_line(line,"red")
+            self._win.draw_line(line2,"red")
+        else:
+            self._win.draw_line(line2,"white")
+        line3 = Line(Point(x2, y1), Point(x2, y2))
         if self.has_right_wall:
-            line = Line(Point(x2, y1), Point(x2, y2))
-            self._win.draw_line(line,"red")
+            self._win.draw_line(line3,"red")
+        else:
+            self._win.draw_line(line3,"white")
+        line4 = Line(Point(x1, y2), Point(x2, y2))
         if self.has_bottom_wall:
-            line = Line(Point(x1, y2), Point(x2, y2))
-            self._win.draw_line(line,"red")
+            self._win.draw_line(line4,"red")
+        else:
+            self._win.draw_line(line4,"white")
 
     def draw_move(self, to_cell, undo=False):
         src_x = self._x1 + 0.5*(self._x2-self._x1)
